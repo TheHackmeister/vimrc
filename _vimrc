@@ -1,7 +1,7 @@
 set nocompatible		" Be iMproved, required
 set encoding=utf-8
 
-" General settings.
+" ----- General settings -----------------------------------------------------
 set showcmd			" Display incomplete commands
 set number			" Display line numbers
 set noswapfile			" Don't keep the swap files
@@ -18,9 +18,27 @@ set hlsearch                    " Highlight matches
 set incsearch                   " Incremental searching
 set ignorecase                  " Searches are case insensitive...
 set smartcase                   " ... unless they contain at least one capital letter
-colorscheme molokai'		" The color scheme
 
-" Settings to investigate.
+" ----- Custom shortcuts -----------------------------------------------------
+
+" Map space to be the leader key. 
+" Space doesn't appear for 'showcmd'. Can work around this by using \ as leader 
+" and mapping (must be :map, not :noremap) space to \.
+nmap <Space> <Leader>
+nmap <Leader>n :NERDTreeToggle<CR>
+" This maps S to stamp. It overwrites substitute line, which I think is dumb.
+nnoremap S "_diwP 
+
+" Resource the vimrc. Expect this to change. 
+nmap <Leader>r :source $MYVIMRC<CR>
+
+
+" ----- Filetype specific settings -------------------------------------------
+" can add expand tab to insert spaces. 
+autocmd FileType php setl shiftwidth=4 tabstop=4
+
+
+" ----- Settings to investigate ----------------------------------------------
 
 " I'm not actually sure what this does. But I think it's helpful.
 set statusline=[%02n]\ %f\ %(\[%M%R%H]%)%=\ %4l,%02c%2V\ %P%*
@@ -28,13 +46,8 @@ set statusline=[%02n]\ %f\ %(\[%M%R%H]%)%=\ %4l,%02c%2V\ %P%*
 " Can I set this based on the OS? What about it's default setting?
 set fileformats+=dos
 
-"" Whitespace
-"set tabstop=8 shiftwidth=2
-"set tabstop=2 shiftwidth=2      " a tab is two spaces (or set this to 4)
-"set expandtab                   " use spaces, not tabs (optional)
 
-
-" Begin loading plugins. 
+" ----- Plugins --------------------------------------------------------------
 " 
 " Install plug on linux via: 
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -50,9 +63,31 @@ set fileformats+=dos
 " :PlugClean will removed unused directories. 
 " 
 " For more: https://github.com/junegunn/vim-plug
-call plug#begin() " Might need path as argument.
+call plug#begin()
+" Must use single quotes.
 " Plug 'https://github.com/vim-scripts/ScrollColors'
 Plug 'tomasr/molokai'
-Plug 'kshenoy/vim-signature' " Plug complains about needing an argument. 
+Plug 'kshenoy/vim-signature' 
+Plug 'scrooloose/nerdtree'
+" Should use Syntastic for other languages. This can use php-code-sniffer to
+" double check the code, which is cool.	
+Plug 'joonty/vim-phpqa'		
+" Can't use without python support :(. 
+" Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plug 'jakobwesthoff/whitespacetrail' " I'm not sure this is working.
+Plug 'sickill/vim-pasta' " Makes pasteing indent aware. Very nice.
 call plug#end()
 
+" ----- Plugin settings ------------------------------------------------------
+colorscheme molokai		" The color scheme
+autocmd vimenter * NERDTree	" Start NERDTree
+autocmd vimenter * wincmd p	" Start in the opened file instead of NERDTree.
+
+
+" For phpqa.
+" Don't run messdetector on save (default = 1)
+let g:phpqa_messdetector_autorun = 0
+" Don't run codesniffer on save (default = 1)
+let g:phpqa_codesniffer_autorun = 0
+" Show code coverage on load (default = 0)
+let g:phpqa_codecoverage_autorun = 0
