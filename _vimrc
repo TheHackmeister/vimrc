@@ -36,6 +36,7 @@ nmap <Leader>r :source $MYVIMRC<CR>
 " ----- Filetype specific settings -------------------------------------------
 " can add expand tab to insert spaces. 
 autocmd FileType php setl shiftwidth=4 tabstop=4
+autocmd FileType py setl shiftwidth=4 tabstop=4 softtabstop=4 expandtab 
 
 
 " ----- Settings to investigate ----------------------------------------------
@@ -72,6 +73,7 @@ Plug 'scrooloose/nerdtree'
 " Should use Syntastic for other languages. This can use php-code-sniffer to
 " double check the code, which is cool.	
 Plug 'joonty/vim-phpqa'		
+Plug 'scrooloose/syntastic'
 " Can't use without python support :(. 
 " Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plug 'jakobwesthoff/whitespacetrail' " I'm not sure this is working.
@@ -91,3 +93,7 @@ let g:phpqa_messdetector_autorun = 0
 let g:phpqa_codesniffer_autorun = 0
 " Show code coverage on load (default = 0)
 let g:phpqa_codecoverage_autorun = 0
+
+" For vim-pasta
+" It doesn't work as well in python, but it still can take an educated guess.
+let g:pasta_enabled_filetypes = ['python'] 
