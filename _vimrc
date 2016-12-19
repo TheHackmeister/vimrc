@@ -20,6 +20,13 @@ set ignorecase                  " Searches are case insensitive...
 set smartcase                   " ... unless they contain at least one capital letter
 set iskeyword+=^_		" Makes _ similar to - for word detection. Could also use autocmd to do it selectively.
 
+" This allows me to reference files in these folders in an OS agnostic way. 
+if has('win32') || has ('win64')
+	let $VIMHOME = $HOME."/vimfiles"
+else
+	let $VIMHOME = $HOME."/.vim"
+endif
+
 " ----- Custom shortcuts -----------------------------------------------------
 
 " Map space to be the leader key.
@@ -41,16 +48,25 @@ command! W w 			" lets :W write.
 " Resource the vimrc. Expect this to change.
 nmap <Leader>r :source $MYVIMRC<CR>
 
+" Shortcuts for cheat-sheet. 
+" eh - Edit Help. 
+nmap <Leader>h :h myhelp<CR>
+nmap <Leader>eh :vs $VIMHOME/plugged/vim-myhelp/doc/myhelp.txt<CR>
+autocmd FileType help noremap <buffer> q :q<cr>
+
+" Change working directory to be the current files location. 
+nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 
 " ----- Filetype specific settings -------------------------------------------
 " can add expand tab to insert spaces.
 autocmd FileType php setl shiftwidth=4 tabstop=4
 autocmd FileType py setl shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+" Remap q to quit in help buffers. Would also consider space. 
 
 
 
 " ----- OS Specific settings ------------------------------------------------
-if has("gui_running")	
+if has("gui_running")
     if has("gui_gtk2")
         set guifont=Inconsolata\ 12
     elseif has("gui_win32")
@@ -90,6 +106,7 @@ Plug 'tomasr/molokai'			" Color scheme.
 Plug 'chriskempson/vim-tomorrow-theme'	" Color scheme.
 Plug 'kshenoy/vim-signature' 		" Puts marks next to line numbers.
 Plug 'scrooloose/nerdtree'		" File navigation.
+Plug 'Xuyuanp/nerdtree-git-plugin'	" For git integration.
 Plug 'joonty/vim-phpqa'			" Better php highlighting and linting.
 Plug 'scrooloose/syntastic'		" Better highlighting and linting.
 " Can't use without python support :(.
@@ -100,6 +117,8 @@ Plug 'sickill/vim-pasta'		" Makes pasteing indent aware. Very nice.
 Plug 'vim-airline/vim-airline'		" Better bottom bar.
 Plug 'vim-airline/vim-airline-themes'	" Theme for bottom bar.
 Plug 'mhinz/vim-signify'		" Src Ctl markups next to line numbers
+"Plug 'airblade/vim-gitgutter'		" Git markups next to line numbers.
+Plug 'theHackmeister/vim-myhelp'	" In vim cheatsheet. 
 call plug#end()
 
 " ----- Plugin settings ------------------------------------------------------
@@ -132,10 +151,10 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['php'] }
 let g:pasta_enabled_filetypes = ['python']
 
 " For airline
-" Problems: 
-" 	Missing some chars. 
+" Problems:
+" 	Missing some chars.
 "	Whitespace detection I want off.
-"	Bigger buff numbers on buff bar. 
+"	Bigger buff numbers on buff bar.
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 " Turn off whitespace detection.
@@ -154,3 +173,21 @@ nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
 nmap <leader>- <Plug>AirlineSelectPrevTab
 nmap <leader>+ <Plug>AirlineSelectNextTab
+
+
+" For actual symbols. 
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "*",
+    \ "Staged"    : "+",
+    \ "Untracked" : "U",
+    \ "Renamed"   : ">",
+    \ "Unmerged"  : "=",
+    \ "Deleted"   : "X",
+    \ "Dirty"     : "x",
+    \ "Clean"     : " ",
+    \ "Unknown"   : "?"
+    \ }
+
+"let g:gitgutter_diff_base = '19d409'
+"let g:gitgutter_async=0
+"let g:gitgutter_log=1
