@@ -57,6 +57,16 @@ autocmd FileType help noremap <buffer> q :q<cr>
 " Change working directory to be the current files location. 
 nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 
+" Save and run python.
+nmap <Leader>s :w<CR>:!python %<CR>
+
+" Move windows
+nnoremap <Leader>j <C-W><C-J>
+nnoremap <Leader>k <C-W><C-K>
+nnoremap <Leader>l <C-W><C-L>
+nnoremap <Leader>h <C-W><C-H>
+
+
 " ----- Filetype specific settings -------------------------------------------
 " can add expand tab to insert spaces.
 autocmd FileType php setl shiftwidth=4 tabstop=4
@@ -122,7 +132,7 @@ Plug 'theHackmeister/vim-myhelp'	" In vim cheatsheet.
 call plug#end()
 
 " ----- Plugin settings ------------------------------------------------------
-colorscheme tomorrow-night	" The color scheme
+colorscheme Tomorrow-Night	" The color scheme
 let g:airline_theme='tomorrow'	" I've also liked molokai
 " This changes the SignColumn background to the match the rest of the text.
 highlight SignifySignAdd ctermbg=none
